@@ -46,10 +46,10 @@ class ProductService {
         return axios(config)
     }
 
-    exportCSV(){
+    exportCSV(Id){
         var config = {
             method: 'get',
-            url: API_URL + `csv`
+            url: API_URL + `csv/${Id}`
         };
         return axios(config)
     }
