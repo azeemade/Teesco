@@ -22,7 +22,8 @@ class ProductService {
         var config = {
             method: 'post',
             url: API_URL + `product`,
-            data: JSON.stringify(product)
+            headers: {'Content-Type': 'multipart/form-data'},
+            data: product
         };
         return axios(config)
     }
@@ -31,7 +32,8 @@ class ProductService {
         var config = {
             method: 'post',
             url: API_URL + `product`,
-            data: JSON.stringify(product)
+            data: product,
+            headers: {'Content-Type': 'multipart/form-data'}
         };
         return axios(config)
     }
@@ -48,6 +50,22 @@ class ProductService {
         var config = {
             method: 'get',
             url: API_URL + `csv`
+        };
+        return axios(config)
+    }
+
+    ListSizes(){
+        var config = {
+            method: 'get',
+            url: API_URL + 'sizes'
+        };
+        return axios(config)
+    }
+
+    ListImprints(){
+        var config = {
+            method: 'get',
+            url: API_URL + 'imprints'
         };
         return axios(config)
     }
