@@ -125,10 +125,11 @@ class ProductController extends Controller
         ]);
     }
 
-    public function exportCSV(Request $request)
+    public function exportCSV(Request $request, $id)
     {
         $fileName = 'ProductsData.csv';
-        $products = Product::all();
+        $product = Product::where('id', '=', $id)->first();
+        //$products = Product::all();
 
         $headers = array(
             "Content-type"        => "text/csv",
@@ -140,25 +141,25 @@ class ProductController extends Controller
 
         $columns = array("Id", "Name", "Price", "Units", "Description", "Image Link", "Color", "Size", "Imprint", "Date Created");
 
-        $callback = function () use ($products, $columns) {
+        $callback = function () use ($product, $columns) {
 
             $file = fopen('php://output', 'w');
             fputcsv($file, $columns);
 
-            foreach ($products as $product) {
-                $row['Id'] = $product->id;
-                $row['Name'] = $product->name;
-                $row['Price'] = $product->price;
-                $row['Units'] = $product->units;
-                $row['Description'] = $product->description;
-                $row['Image Link'] = $product->image;
-                $row['Color'] = $product->color;
-                $row['Size'] = $product->size->size_title;
-                $row['Imprint'] = $product->imprint->imprint_title;
-                $row['Date Created'] = $product->created_at;
+            //foreach ($products as $product) {
+            $row['Id'] = $product->id;
+            $row['Name'] = $product->name;
+            $row['Price'] = $product->price;
+            $row['Units'] = $product->units;
+            $row['Description'] = $product->description;
+            $row['Image Link'] = $product->image;
+            $row['Color'] = $product->color;
+            $row['Size'] = $product->size->size_title;
+            $row['Imprint'] = $product->imprint->imprint_title;
+            $row['Date Created'] = $product->created_at;
 
-                fputcsv($file, array($row['Id'], $row['Name'], $row['Price'], $row['Units'], $row['Description'], $row['Image Link'], $row['Color'], $row['Size'], $row['Imprint'], $row['Date Created']));
-            }
+            fputcsv($file, array($row['Id'], $row['Name'], $row['Price'], $row['Units'], $row['Description'], $row['Image Link'], $row['Color'], $row['Size'], $row['Imprint'], $row['Date Created']));
+            //}
 
             fclose($file);
         };

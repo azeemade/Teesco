@@ -24,7 +24,7 @@ Route::group(['prefix' => 'v1'], function ($router) {
     Route::get('products/{product}', [ProductController::class, 'show']);
     Route::post('/product', [ProductController::class, 'updateOrCreate']);
     Route::delete('products/{product}', [ProductController::class, 'destroy']);
-    Route::get('/csv', [ProductController::class, 'exportCSV']);
+    Route::get('/csv/{id}', [ProductController::class, 'exportCSV']);
 
     Route::get('/sizes', [SizeController::class, 'index']);
     Route::get('/imprints', [ImprintController::class, 'index']);
