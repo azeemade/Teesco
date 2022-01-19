@@ -56,16 +56,15 @@ class ProductController extends Controller
             ]
         ]);
     }
-
-    public function uploadFile(Request $request)
+    public function upload($request)
     {
         if ($request->hasFile('image')) {
             $name = time() . "_" . $request->file('image')->getClientOriginalName();
             $request->file('image')->move(public_path('images'), $name);
-        }
-        return response()->json(asset("images/$name"), 201);
-    }
 
+            return $name;
+        }
+    }
     /**
      * Store a newly created resource in storage.
      *
@@ -74,11 +73,20 @@ class ProductController extends Controller
      */
     public function updateOrCreate(Request $request)
     {
-        if ($request->hasFile('image')) {
-            $name = time() . "_" . $request->file('image')->getClientOriginalName();
-            $request->file('image')->move(public_path('images'), $name);
-        }
-        //return response()->json();
+        $request->validate([
+            'name' => 'required',
+            'price' => 'required|numeric',
+            'units' => 'required|numeric',
+            'description' => 'required',
+            'color' => 'required',
+            'size' => 'required',
+            'imprint' => 'required',
+        ]);
+
+        $name = $this->upload($request);
+
+        $size = Size::where('size_title', $request->size)->first();
+        $imprint = Imprint::where('imprint_title', $request->imprint)->first();
 
         $product = Product::updateOrCreate([
             'id' => $request->id,
@@ -89,16 +97,14 @@ class ProductController extends Controller
             'description' => $request->description,
             'image' => $name,
             'color' => $request->color,
-            'size_id' => $request->size_id,
-            'imprint_id' => $request->imprint_id
+            'size_id' => $size->id,
+            'imprint_id' => $imprint->id
         ]);
 
         return response()->json(
-            //asset("images/$name"),
-            //201,
             [
                 'status' => (bool) $product,
-                'message' => $product ? 'Product Action Successful!' : 'Error Performing Product Action'
+                'message' => $product ? 'Product Action Successful!' : 'One or more field empty'
             ]
         );
     }

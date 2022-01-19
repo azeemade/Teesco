@@ -14,7 +14,7 @@ class ImprintController extends Controller
      */
     public function index()
     {
-        //
+        return response()->json(Imprint::all(), 200);
     }
 
     /**

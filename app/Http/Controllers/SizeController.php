@@ -14,7 +14,7 @@ class SizeController extends Controller
      */
     public function index()
     {
-        //
+        return response()->json(Size::all(), 200);
     }
 
     /**

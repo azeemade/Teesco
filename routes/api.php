@@ -3,6 +3,8 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ImprintController;
+use App\Http\Controllers\SizeController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -23,4 +25,7 @@ Route::group(['prefix' => 'v1'], function ($router) {
     Route::post('/product', [ProductController::class, 'updateOrCreate']);
     Route::delete('products/{product}', [ProductController::class, 'destroy']);
     Route::get('/csv', [ProductController::class, 'exportCSV']);
+
+    Route::get('/sizes', [SizeController::class, 'index']);
+    Route::get('/imprints', [ImprintController::class, 'index']);
 });
